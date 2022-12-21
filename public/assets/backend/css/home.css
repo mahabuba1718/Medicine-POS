@@ -1,0 +1,31 @@
+html{
+    scroll-behavior: smooth;
+}
+body {
+    background-image: url("../img/back1.jpg");
+    background-repeat: round;
+    height: 100vh;
+}
+h2{
+    font-family: 'Handlee', cursive;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-family: 'Handlee', cursive;
+    padding: 1% 10%;
+    background-color: rgba(0,0,0,0.3);
+}
+footer a{
+    color: white;
+    margin: 0 10px;
+}
+footer a:hover{
+    color: green;
+    text-decoration: none;
+}
+footer i{
+    margin-right: 1px;
+}
