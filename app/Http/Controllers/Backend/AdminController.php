@@ -31,6 +31,7 @@ class AdminController extends Controller
 {
     public function master()
     {
+        // 
         $expireds = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->get();
         foreach ($expireds as $expired){
             Stock::where('madicine_id',$expired->madicine_id)->update([
@@ -40,6 +41,7 @@ class AdminController extends Controller
                 'show_at_purchase' => 0,
             ]);
         }
+        // view
         return view('backend.layout.home');
     }
 
@@ -62,6 +64,7 @@ class AdminController extends Controller
                 $file->storeAs('pharmacist',$filename);
             }
         }
+        // generate contact_id
         $count = User::where('role_id',2)->count();
         $contact_id = $count;
         $contact_id++;
@@ -82,10 +85,11 @@ class AdminController extends Controller
     // login
     public function login_post(Request $request)
     {
-        $credentials = $request->validate([
+        $credentials = $request->validate(
+            [
             'email' => ['required', 'email'],
             'password' => ['required'],
-        ]);
+            ]);
 
         if (Auth::attempt($credentials))
         {
@@ -99,10 +103,7 @@ class AdminController extends Controller
                 return redirect()->route('dashboard')->with('message', 'Pharmacist Login Successful');
             }
         }
-        // return redirect('/')->with('fail','unauthoried');
-
-
-        return back()->onlyInput('email')->with('fail','The provided credentials do not match our records.');
+        return back()->onlyInput('email')->with('fail','The provided credentials do not match with records.');
     }
 
 
@@ -188,18 +189,23 @@ class AdminController extends Controller
         return view('backend.layout.profile');
     }
 
-    public function update_profile(Request $request){
-//        dd($request->all());
-        $validator = Validator::make($request->all(),[
+    public function update_profile(Request $request)
+    {
+//       dd($request->all());
+        $validator = Validator::make($request->all(),
+        [
             'name' => ['required'],
             'email' => ['required','email'],
             'phone' => ['required'],
             'image' => ['image','mimes:jpeg,png,jpg'],
         ]);
 
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return back()->withErrors($validator->errors())->withInput()->with('invalidUpdate','Invalid Update');
-        }else{
+        }
+        else
+        {
             $pharm = User::find($request->u_id);
             $filename = $pharm -> image;
             if ($request->hasFile('image'))
@@ -233,11 +239,15 @@ class AdminController extends Controller
             'new_password' => ['required','confirmed'],
         ]);
 
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return back()->withErrors($validator->errors())->withInput()->with('invalidPassword','Invalid Update');
-        }else{
+        }
+        else
+        {
             $pass = User::find($request->id);
-            if(!Hash::check($request->current_password, $pass->password)){
+            if(!Hash::check($request->current_password, $pass->password))
+            {
                 return back()->with("error", "Old Password Doesn't match!");
             }
             User::find($request->id)->update([
@@ -268,7 +278,7 @@ class AdminController extends Controller
     // contact= pharmacist
     public function contact_pharmacist()
     {
-        $pharma=User::where('role_id','2')->paginate(2);
+        $pharma=User::where('role_id','2')->paginate(5);
         $customer=Customer::paginate(2);
         $supplier=Supplier::paginate(2);
         return view('backend.layout.contact', compact('pharma','supplier', 'customer'));
@@ -309,9 +319,12 @@ class AdminController extends Controller
             'image' => ['required','image','mimes:jpeg,png,jpg'],
             ]
         );
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return back()->withErrors($validator->errors())->withInput()->with('invalidPharmacistAdd','Invalid Add');
-        }else{
+        }
+        else
+        {
             $filename = '';
             if ($request->hasFile('image'))
             {
@@ -322,6 +335,7 @@ class AdminController extends Controller
                     $file -> storeAs('pharmacist',$filename);
                 }
             }
+            // generate contact_id
             $count = User::where('role_id',2)->count();
             $contact_id = $count;
             $contact_id++;
@@ -399,7 +413,7 @@ class AdminController extends Controller
     // contact = customer
     public function contact_customer()
     {
-        $pharma=User::where('role_id','2')->paginate(2);
+        $pharma=User::where('role_id','2')->paginate(5);
         $customer=Customer::paginate(2);
         $supplier=Supplier::paginate(2);
         return view('backend.layout.contact', compact('pharma','supplier','customer'));
@@ -438,9 +452,12 @@ class AdminController extends Controller
             ]
             );
         // dd($request->all());
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return back()->withErrors($validator->errors())->withInput()->with('invalidCusAdd','invalid');
-        }else{
+        }
+        else
+        {
             $filename = '';
             if ($request->hasFile('image1'))
             {
@@ -451,7 +468,7 @@ class AdminController extends Controller
                     $file -> storeAs('customer',$filename);
                 }
             }
-
+            // generate customer_id
             $count = Customer::count();
             $cutomer_id = $count;
             $cutomer_id++;
@@ -481,11 +498,11 @@ class AdminController extends Controller
         // dd($request->all());
          $request->validate(
              [
-                 'name' => ['required'],
-                 'customer_id' => ['required'],
-                 'email' => ['required','email'],
-                 'phone' => ['required'],
-                 'image' => ['image','mimes:jpeg,png,jpg'],
+                'name' => ['required'],
+                'customer_id' => ['required'],
+                'email' => ['required','email'],
+                'phone' => ['required'],
+                'image' => ['image','mimes:jpeg,png,jpg'],
              ]
          );
         $cus = Customer::find($request->id);
@@ -532,7 +549,7 @@ class AdminController extends Controller
     // contact = supplier
     public function contact_supplier()
     {
-        $pharma=User::where('role_id','2')->paginate(2);
+        $pharma=User::where('role_id','2')->paginate(5);
         $customer=Customer::paginate(2);
         $supplier=Supplier::paginate(2);
         return view('backend.layout.contact', compact('supplier','pharma', 'customer'));
@@ -548,9 +565,12 @@ class AdminController extends Controller
 //            'image3' => ['required','image','mimes:jpeg,png,jpg'],
             ]
         );
-        if($validator->fails()){
+        if($validator->fails())
+        {
             return back()->withErrors($validator->errors())->withInput()->with('invalidSupplierAdd','invalid');
-        }else{
+        }
+        else
+        {
             $filename = '';
             if ($request->hasFile('image3'))
             {
@@ -561,7 +581,7 @@ class AdminController extends Controller
                     $file -> storeAs('supplier',$filename);
                 }
             }
-
+            // generate supplier_id
             $count = Supplier::count();
             $supplier_id = $count;
             $supplier_id++;
@@ -886,12 +906,11 @@ class AdminController extends Controller
     // medicine
     public function medicine()
     {
-        $admedicine=Medicine::paginate(2);
+        $admedicine=Medicine::all();
         $categories=Category::all();
         $units=Unit::all();
         $types=Type::all();
         return view('backend.layout.medicine', compact('admedicine','categories','units','types'));
-
     }
 
     public function med_status($id)
@@ -932,7 +951,8 @@ class AdminController extends Controller
                 'image' => ['required','image','mimes:jpeg,png,jpg'],
                 ]
             );
-            if($validator->fails()){
+            if($validator->fails())
+            {
                 return back()->withErrors($validator->errors())->withInput()->with('invalidMedAdd','Some Required Field is not Filled Up!');
             }
             $filename = '';
@@ -959,7 +979,7 @@ class AdminController extends Controller
                     'description'=>$request->description,
                 ]
             );
-
+            // to create a stock when a medicine is added 
             Stock::create([
                 'madicine_id' => $med->id,
             ]);
@@ -1057,7 +1077,7 @@ class AdminController extends Controller
     // purchase List
     public function purchase()
     {
-        $adpurchase=Purchase::orderBy('id', 'desc')->paginate(2);
+        $adpurchase=Purchase::all();
         $subpurchase= Subpurchase::all();
         // dd($subpurchase);
 //        $admedicine=Medicine::all();
@@ -1074,19 +1094,24 @@ class AdminController extends Controller
         ]);
     }
 
-    public function approve(Request $request){
+    public function approve(Request $request)
+    {
         $purchase_info = Purchase::find($request->ApporvePurchId);
         $subpurchase_infos = Subpurchase::where('purchase_id',$purchase_info->id)->get();
-//         dd($purchase_info,$subpurchase_infos);
-        foreach ($subpurchase_infos as $subpurchase_info){
+        // dd($purchase_info,$subpurchase_infos); 
+        foreach ($subpurchase_infos as $subpurchase_info)
+        {
             $med_info = Stock::where('madicine_id',$subpurchase_info->madicine_id)->first();
-            if($med_info->stock == null){
+            if($med_info->stock == null)
+            {
                 $med_info->update([
                     'stock' => $subpurchase_info->quantity,
                     'stock_alert' => $subpurchase_info->alert,
                     'status' => '1'
                 ]);
-            }else{
+            }
+            else
+            {
                 $update_stock = $med_info->stock + $subpurchase_info->quantity;
                 $med_info->update([
                     'stock' => $update_stock,
@@ -1095,11 +1120,35 @@ class AdminController extends Controller
                 ]);
             }
         }
-
         $purchase_info->update([
             'status' => 1
         ]);
         return back()->with('message','Purchase Approved And Stock Updated Successfully!');
+    }
+
+    public function due_purchase(Request $request){
+        $purchase = Purchase::find($request->PurchId);
+
+        if($request->due_up_amount > $purchase->due_amount){
+            $change = $request->due_up_amount - $purchase->due_amount;
+            $total = $purchase->paid_amount + $request->due_up_amount;
+            $purchase->update([
+                'paid_amount' => $total,
+                'due_amount' => 0,
+                'change_amount' => $change
+            ]);
+        }else{
+            $due = $purchase->due_amount - $request->due_up_amount;
+            $total = $purchase->paid_amount + $request->due_up_amount;
+            $purchase->update([
+                'paid_amount' => $total,
+                'due_amount' => $due,
+                'change_amount' => 0
+            ]);
+        }
+
+        return back()->with('message','Purchase Due Updated Successfully!');
+
     }
 
     public function deletepurch(Request $request)

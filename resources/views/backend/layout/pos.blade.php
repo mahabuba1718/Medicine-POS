@@ -1,4 +1,9 @@
 @extends('backend.master')
+
+@push('custom_css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+
 @section('content')
 <!-- <style>
             .mr-2{
@@ -83,7 +88,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="form-group">
-                                    <select name="customer_id" id="contact_id" class="form-control">
+                                    <select name="customer_id" id="contact_id" class="form-control cus_search p-2">
                                         <option value="0">Walk In Customer</option>
                                         @foreach($customers as $customer)
                                             <option value="{{$customer->id}}">{{$customer->customer_name}}</option>
@@ -257,8 +262,15 @@
 
 @endsection
 @push('custom_script')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
 $(document).ready(function() {
+    // customer search
+    $(document).ready(function() {
+    $('.cus_search').select2();
+    });
+    
     $(document).on('change', '.QTY', function() {
         var i = 1;
         var i = $(this).parents('tr').attr('id');

@@ -104,7 +104,7 @@
                                                         </select>
                                                     </td>
                                                     <td colspan="1" class="">
-                                                        <input class="form-control" type="date" for="expire_date" name="expire_date[]" id="expire_date1" required/>
+                                                        <input min= "{{date('Y-m-d')}}" class="form-control" type="date" for="expire_date" name="expire_date[]" id="expire_date1" required/>
                                                     </td>
                                                     <td colspan="1" class="">
                                                         <div class="input-group">

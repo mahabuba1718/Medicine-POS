@@ -74,9 +74,7 @@
                                                               placeholder="Please add Category details"></textarea>
                                                     <span class="text-danger"> </span>
                                                 </div>
-
                                             </div>
-
                                             <div class="card-footer text-center">
                                                 <button class="btn text-light" style="background-color:#25aa9e;"
                                                         type="submit">
@@ -770,6 +768,7 @@
 @push('custom_script')
     <script>
         $(document).ready(function () {
+            // category edit
             $(document).on('click', '.category_edit', function () {
                 var update_id = $(this).val();
                 // alert(update_id);
@@ -786,7 +785,7 @@
                     }
                 });
             });
-
+            // unit edit
             $(document).on('click', '.unit_edit', function () {
                 var update_id = $(this).val();
                 // alert(update_id);
@@ -803,7 +802,7 @@
                     }
                 });
             });
-
+            // type edit
             $(document).on('click', '.type_edit', function () {
                 var update_id = $(this).val();
                 // alert(update_id);

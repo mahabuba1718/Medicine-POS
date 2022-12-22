@@ -105,8 +105,9 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 
     // purchase
     Route::get('/purchase',[AdminController::class,'purchase'])->name('purchase');
-    Route::post('/deletepurch',[AdminController::class,'deletepurch'])->name('deletepurch');
     Route::post('/purchase-approve', [AdminController::class,'approve'])->name('purchase_approve');
+    Route::put('/due_purchase',[AdminController::class,'due_purchase'])->name('due_purchase');
+    Route::post('/deletepurch',[AdminController::class,'deletepurch'])->name('deletepurch');
     Route::get('/viewpurch/{purch_id}',[AdminController::class,'viewpurch'])->name('viewpurch');
 
     // add-purchase

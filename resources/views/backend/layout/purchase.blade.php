@@ -1,4 +1,7 @@
 @extends('backend.master')
+@push('custom_css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+@endpush
 @section('content')
 <div class="container-fluid px-0">
     <section class="section p-3">
@@ -30,20 +33,20 @@
                         </div>
                         <div class="card-body">
                             <div class="">
-                                <div class="table_section p-3">
-                                    <table class="table table-striped text-center" style="vertical-align: middle;">
+                                <div class="table_section p-3 table-responsive-xxl">
+                                    <table id="purchase_tbl" class="table table-striped text-center" style="vertical-align: middle;">
                                         <thead>
                                             <tr>
                                                 <th scope="col" class="" width="4%">#</th>
                                                 <th scope="col" class="" width="7%">Purchase No.</th>
                                                 <th scope="col" class="" width="7%">Purchase Date</th>
                                                 <th scope="col" class="" width="7%">Supplier ID</th>
-                                                <th scope="col" class="" width="7%">Vat(BDT)</th>
-                                                <th scope="col" class="" width="7%">Discount(BDT) </th>
-                                                <th scope="col" class="" width="7%">Total Amount(BDT) </th>
-                                                <th scope="col" class="" width="7%">Paid Amount(BDT)</th>
-                                                <th scope="col" class="" width="7%">Due Amount(BDT) </th>
-                                                <th scope="col" class="" width="7%">Change Amount(BDT) </th>
+                                                <th scope="col" class="" width="7%">Vat</th>
+                                                <th scope="col" class="" width="7%">Discount </th>
+                                                <th scope="col" class="" width="7%">Total Amount </th>
+                                                <th scope="col" class="" width="7%">Paid Amount</th>
+                                                <th scope="col" class="" width="7%">Due Amount </th>
+                                                <th scope="col" class="" width="7%">Change Amount </th>
                                                 <th scope="col" class="" width="7%">Status</th>
                                                 <th scope="col" class="" width="7%">Action</th>
                                                 <th scope="col" class="" width="7%">View Purchase</th>
@@ -55,7 +58,7 @@
                                                 <td scope="col" class="">{{$key+1}}</td>
                                                 <td scope="col" class="my-auto">{{$purchase->purchase_no}}</td>
                                                 <td scope="col" class="">{{\Carbon\Carbon::parse($purchase->date)->format('d/m/Y')}}</td>
-                                                <td scope="col" class="my-auto">{{$purchase->supplier_info->supplier_id}}</td>
+                                                <td scope="col" class="my-auto">SUP-{{str_pad($purchase->supplier_info->supplier_id,'3','0',STR_PAD_LEFT)}}</td>
                                                 <td scope="col" class="">{{$purchase->vat}}</td>
                                                 <td scope="col" class="">{{$purchase->discount_amount}}</td>
                                                 <td scope="col" class="">{{$purchase->total_amount}}</td>
@@ -85,6 +88,18 @@
                                                                 </button>
                                                             </li>
                                                             @endif
+                                                            @if($purchase->due_amount > 0)
+                                                                <li>
+                                                                    <button class="dropdown-item purch_due"
+                                                                        value="{{$purchase->id}}" type="button"
+                                                                        class="m-1 btn deleteRow float-right"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                        title="Delete">
+                                                                        <i style="font-size: 10px;"
+                                                                            class="fas fa-trash my-2"> Due</i>
+                                                                    </button>
+                                                                </li>
+                                                            @endif
                                                             <li>
                                                                 <button class="dropdown-item purch_delete"
                                                                     value="{{$purchase->id}}" type="button"
@@ -94,7 +109,6 @@
                                                                     <i style="font-size: 10px;"
                                                                         class="fas fa-trash my-2"> Delete</i>
                                                                 </button>
-
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -140,10 +154,10 @@
                                                                                                 Total Quantity
                                                                                             </th>
                                                                                             <th scope="col" width="10%">
-                                                                                                Price(BDT)
+                                                                                                Price
                                                                                             </th>
                                                                                             <th scope="col" width="9%">
-                                                                                                Sub Total(BDT)
+                                                                                                Sub Total
                                                                                             </th>
                                                                                         </tr>
                                                                                     </thead>
@@ -204,9 +218,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            {{ $adpurchase->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -244,6 +255,40 @@
     </div>
 </div>
 
+<div class="modal" id="PurchDue">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Due Update
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{route('due_purchase')}}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <input type="hidden" id="PurchId" name="PurchId" value="">
+                    <div class="mb-3">
+                        <label for="dueAmount" class="form-label">Due Amount</label>
+                        <input type="number" class="form-control" id="dueAmount" name="due_up_amount">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button class="btn text-light" style="background-color:#25aa9e;" type="submit">
+                        Save Changes
+                    </button>
+
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger">
+                        Cancel
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal" id="PurchApprove">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
@@ -257,9 +302,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="ApporvePurchId" name="ApporvePurchId" value="">
-                    You Want to Approve <span class="purchase_code"></span> Purchase?<br>
-                    Because After Approved All Medicine Stock Will Updated And It Will Unchangeable.<br>
-                    So Check Properly, Then Approve <span class="purchase_code"></span> Purchase
+                    <p class="text-center"> You Want to Approve <span class="purchase_code "></span> Purchase?</p>
+                    <p class="text-center">If You Press Approve, <br> All Medicine Stock Will Updated And It Will Be Unchangeable.<br> </p>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button class="btn text-light" style="background-color:#25aa9e;" type="submit">
@@ -282,21 +326,35 @@
 @endsection
 
 @push('custom_script')
-<script>
-$(document).on('click', '.purch_delete', function() {
-    var delete_id = $(this).val();
-    // alert(update_id);
-    $("#PurchDelete").modal('show');
-    $("#DelPurchId").val(delete_id);
-});
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
 
-$(document).on('click', '.purch_approve', function() {
-    var approve_id = $(this).val();
-    var approve_code = $(this).attr('data-purchase-code');
-    // alert(update_id);
-    $("#PurchApprove").modal('show');
-    $("#ApporvePurchId").val(approve_id);
-    $(".purchase_code").text(approve_code);
+<script>
+    $(document).ready(function () {
+
+    $('#purchase_tbl').DataTable();
+
+    $(document).on('click', '.purch_delete', function() {
+        var delete_id = $(this).val();
+        // alert(update_id);
+        $("#PurchDelete").modal('show');
+        $("#DelPurchId").val(delete_id);
+    });
+    $(document).on('click', '.purch_due', function() {
+        var id = $(this).val();
+        // alert(update_id);
+        $("#PurchDue").modal('show');
+        $("#PurchId").val(id);
+    });
+    
+    $(document).on('click', '.purch_approve', function() {
+        var approve_id = $(this).val();
+        var approve_code = $(this).attr('data-purchase-code');
+        // alert(update_id);
+        $("#PurchApprove").modal('show');
+        $("#ApporvePurchId").val(approve_id);
+        $(".purchase_code").text(approve_code);
+    });
 });
 </script>
 @endpush

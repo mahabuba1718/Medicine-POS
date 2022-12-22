@@ -1,4 +1,7 @@
 @extends('backend.master')
+@push('custom_css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+@endpush
 @section('content')
 <style>
 .m-1 {
@@ -200,7 +203,7 @@
                         <div class="card-body">
                             <div class="">
                                 <div class="table_section">
-                                    <table class="table table-striped text-center" style="vertical-align: middle;">
+                                    <table id="medicine_tbl" class=" table table-striped text-center" style="vertical-align: middle;">
                                         <thead>
                                             <tr>
                                                 <th scope="col" class="" width="5%" style="padding: 0.7rem;">#</th>
@@ -212,10 +215,10 @@
                                                 </th>
                                                 <th scope="col" class="" width="10%" style="padding: 0.7rem;">Unit</th>
                                                 <th scope="col" class="" width="10%" style="padding: 0.7rem;">Type</th>
-                                                <th scope="col" class="" width="9%" style="padding: 0.7rem;">Price(BDT)
+                                                <th scope="col" class="" width="9%" style="padding: 0.7rem;">Price
                                                 </th>
                                                 <th scope="col" class="" width="9%" style="padding: 0.7rem;">Purchase
-                                                    Price(BDT)</th>
+                                                    Price</th>
                                                 <th scope="col" class="" width="7%" style="padding: 0.7rem;">Status</th>
                                                 <th scope="col" class="" width="13%" style="padding: 0.7rem;">Action
                                                 </th>
@@ -315,9 +318,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            {{ $admedicine->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -366,11 +366,19 @@
 @endsection
 
 @push('custom_script')
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     $(document).ready(function () {
+
         @if (Session::has('invalidMedAdd') && count($errors) > 0)
         $('#myModal').modal('show');
         @endif
+
+        $('#medicine_tbl').DataTable();
+
+        // view medicine description 
         $(document).on('click', '.viewBtn', function() {
             var update_id = $(this).val();
             // alert(update_id);
@@ -392,12 +400,14 @@
                 }
             });
         });
+        // delete medicine
         $(document).on('click', '.deleteRow', function() {
             var del_id = $(this).val();
             // alert(update_id);
             $("#myModalp").modal('show');
             $('#DelMedId').val(del_id);
         });
+        // medicine status
         $(document).on('click', '#flexSwitchCheckDefault', function() {
             var update_id = $(this).val();
 
