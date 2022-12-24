@@ -279,8 +279,8 @@ class AdminController extends Controller
     public function contact_pharmacist()
     {
         $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(2);
-        $supplier=Supplier::paginate(2);
+        $customer=Customer::paginate(5);
+        $supplier=Supplier::paginate(5);
         return view('backend.layout.contact', compact('pharma','supplier', 'customer'));
     }
 
@@ -414,13 +414,13 @@ class AdminController extends Controller
     public function contact_customer()
     {
         $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(2);
-        $supplier=Supplier::paginate(2);
+        $customer=Customer::paginate(5);
+        $supplier=Supplier::paginate(5);
         return view('backend.layout.contact', compact('pharma','supplier','customer'));
     }
-    public function cus_status($cus_id)
+    public function cus_status($id)
     {
-        $cus = Customer::find($cus_id);
+        $cus = Customer::find($id);
         if($cus->status == 1)
         {
             $update_status = 0;
@@ -550,8 +550,8 @@ class AdminController extends Controller
     public function contact_supplier()
     {
         $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(2);
-        $supplier=Supplier::paginate(2);
+        $customer=Customer::paginate(5);
+        $supplier=Supplier::paginate(5);
         return view('backend.layout.contact', compact('supplier','pharma', 'customer'));
     }
     public function supplier(Request $request)
@@ -1225,8 +1225,8 @@ class AdminController extends Controller
             ]
         );
         for($i=0; $i<$count; $i++){
-            $med= Medicine::find($request->medicine[$i]);
-            $med->update([
+            $med = Medicine::find($request->medicine[$i]);
+            $med -> update([
                 'show_at_purchase' => '1',
             ]);
         }
@@ -1315,6 +1315,7 @@ class AdminController extends Controller
         return back();
     }
 
+    // pos-sale
     public function pos_sale(Request $request)
     {
 //        dd($request->all());
@@ -1409,6 +1410,38 @@ class AdminController extends Controller
 
     }
 
+    public function due_pos(Request $request){
+        $pos_item = Pos::find($request->PosId);
+
+        if($request->due_up_amount > $pos_item->due_amount){
+            $change = $request->due_up_amount - $pos_item->due_amount;
+            $total = $pos_item->paid_amount + $request->due_up_amount;
+            $pos_item->update([
+                'paid_amount' => $total,
+                'due_amount' => 0,
+                'change_amount' => $change
+            ]);
+        }else{
+            $due = $pos_item->due_amount - $request->due_up_amount;
+            $total = $pos_item->paid_amount + $request->due_up_amount;
+            $pos_item->update([
+                'paid_amount' => $total,
+                'due_amount' => $due,
+                'change_amount' => 0
+            ]);
+        }
+
+        return back()->with('message','Pos Due Updated Successfully!');
+
+    }
+
+    public function deletepos(Request $request)
+    {
+        // dd($request->all());
+        Pos::find($request->DelPosId)->delete();
+        return redirect()-> back();
+    }
+
     //invoice
     public function invoice($id)
     {
@@ -1434,7 +1467,7 @@ class AdminController extends Controller
     // pos sale list
     public function possale()
     {
-        $pos = Pos::orderBy('id', 'desc')->paginate(2);
+        $pos = Pos::paginate(2);
         return view('backend.layout.possale',compact('pos'));
     }
 
@@ -1526,10 +1559,6 @@ class AdminController extends Controller
 
 
 
-//    public function add_more()
-//    {
-//        return view('backend.layout.add_more');
-//    }
 
 
 

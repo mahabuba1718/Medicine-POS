@@ -35,9 +35,9 @@
                                     <div class="row">
                                         <div class="col-6 text-center">
                                             @if(auth()->user()->image == null)
-                                                <img src="{{asset('assets/backend/img/med.webp')}}" alt="image" class="rounded-circle mr-1" style="width: 250px;">
+                                                <img src="{{asset('assets/backend/img/med.webp')}}" alt="image" class="rounded-circle mr-1" style="height: 200px; width: 220px;">
                                             @else
-                                                <img src="{{asset('uploads/pharmacist/'.auth()->user()->image)}}" alt="image" class="rounded-circle mr-1" style="width: 250px;">
+                                                <img src="{{asset('uploads/pharmacist/'.auth()->user()->image)}}" alt="image" class="rounded-circle mr-1" style="height: 200px; width: 220px;">
                                             @endif
                                         </div>
                                         <div class="col-6">

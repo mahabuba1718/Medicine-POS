@@ -38,18 +38,16 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" class="" width="4%">#</th>
-                                                <th scope="col" class="" width="7%">Purchase No.</th>
-                                                <th scope="col" class="" width="7%">Purchase Date</th>
-                                                <th scope="col" class="" width="7%">Supplier ID</th>
-                                                <th scope="col" class="" width="7%">Vat</th>
-                                                <th scope="col" class="" width="7%">Discount </th>
-                                                <th scope="col" class="" width="7%">Total Amount </th>
-                                                <th scope="col" class="" width="7%">Paid Amount</th>
-                                                <th scope="col" class="" width="7%">Due Amount </th>
-                                                <th scope="col" class="" width="7%">Change Amount </th>
-                                                <th scope="col" class="" width="7%">Status</th>
-                                                <th scope="col" class="" width="7%">Action</th>
-                                                <th scope="col" class="" width="7%">View Purchase</th>
+                                                <th scope="col" class="" width="12%">Purchase No.</th>
+                                                <th scope="col" class="" width="10%">Supplier ID</th>
+                                                <th scope="col" class="" width="5%">Vat</th>
+                                                <th scope="col" class="" width="11%">Discount </th>
+                                                <th scope="col" class="" width="9%">Total</th>
+                                                <th scope="col" class="" width="9%">Paid</th>
+                                                <th scope="col" class="" width="10%">Change/Due</th>
+                                                <th scope="col" class="" width="9%">Status</th>
+                                                <th scope="col" class="" width="10%">Action</th>
+                                                <th scope="col" class="" width="11%">View Purchase</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -57,15 +55,20 @@
                                             <tr class="text-center">
                                                 <td scope="col" class="">{{$key+1}}</td>
                                                 <td scope="col" class="my-auto">{{$purchase->purchase_no}}</td>
-                                                <td scope="col" class="">{{\Carbon\Carbon::parse($purchase->date)->format('d/m/Y')}}</td>
                                                 <td scope="col" class="my-auto">SUP-{{str_pad($purchase->supplier_info->supplier_id,'3','0',STR_PAD_LEFT)}}</td>
                                                 <td scope="col" class="">{{$purchase->vat}}</td>
                                                 <td scope="col" class="">{{$purchase->discount_amount}}</td>
                                                 <td scope="col" class="">{{$purchase->total_amount}}</td>
                                                 <td scope="col" class="">{{$purchase->paid_amount}}</td>
-                                                <td scope="col" class="">{{$purchase->due_amount}}</td>
-                                                <td scope="col" class="">{{$purchase->change_amount}}</td>
-
+                                                <td scope="col" class="">
+                                                    @if($purchase->change_amount != 0)
+                                                    {{$purchase->change_amount}} (Change)
+                                                    @elseif($purchase->due_amount != 0)
+                                                    {{$purchase->due_amount}} (Due)
+                                                    @else
+                                                    0
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if ($purchase->status == 0)
                                                     <span class="badge bg-danger" style="padding: 7px;">Pending</span>
@@ -84,7 +87,7 @@
                                                             @if ($purchase->status == 0)
                                                             <li>
                                                                 <button class="dropdown-item purch_approve" data-purchase-code="{{$purchase->purchase_no}}" value="{{$purchase->id}}">
-                                                                    <i style="font-size: 10px;" class="fas fa-pencil-alt my-2"> Approve</i>
+                                                                    <i style="font-size: 10px; font-family: 'FontAwesome';" class="fas fa-pencil-alt my-2"> Approve</i>
                                                                 </button>
                                                             </li>
                                                             @endif
@@ -94,9 +97,9 @@
                                                                         value="{{$purchase->id}}" type="button"
                                                                         class="m-1 btn deleteRow float-right"
                                                                         data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                                        title="Delete">
-                                                                        <i style="font-size: 10px;"
-                                                                            class="fas fa-trash my-2"> Due</i>
+                                                                        title="Due">
+                                                                        <i style="font-size: 10px; font-family: 'FontAwesome';"
+                                                                            class="fa-solid fa-arrow-up-from-bracket my-2"> Due</i>
                                                                     </button>
                                                                 </li>
                                                             @endif
@@ -106,7 +109,7 @@
                                                                     class="m-1 btn deleteRow float-right"
                                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                                     title="Delete">
-                                                                    <i style="font-size: 10px;"
+                                                                    <i style="font-size: 10px; font-family: 'FontAwesome';"
                                                                         class="fas fa-trash my-2"> Delete</i>
                                                                 </button>
                                                             </li>
@@ -136,27 +139,27 @@
                                                                                 <table
                                                                                     class="table table-striped text-center"
                                                                                     style="vertical-align: middle;">
-                                                                                    <thead>
+                                                                                    <thead >
                                                                                         <tr>
-                                                                                            <th scope="col" width="8%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Image
                                                                                             </th>
-                                                                                            <th scope="col" width="13%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Medicine Name
                                                                                             </th>
-                                                                                            <th scope="col" width="12%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Purchase Date
                                                                                             </th>
-                                                                                            <th scope="col" width="11%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Expire Date
                                                                                             </th>
-                                                                                            <th scope="col" width="12%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Total Quantity
                                                                                             </th>
-                                                                                            <th scope="col" width="10%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Price
                                                                                             </th>
-                                                                                            <th scope="col" width="9%">
+                                                                                            <th scope="col" width="14%">
                                                                                                 Sub Total
                                                                                             </th>
                                                                                         </tr>

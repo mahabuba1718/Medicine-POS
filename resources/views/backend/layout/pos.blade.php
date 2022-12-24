@@ -6,16 +6,17 @@
 
 @section('content')
 <!-- <style>
-            .mr-2{
-                margin-left: 0.5rem !important;
-            }
-        </style> -->
+    .card{
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style> -->
 
 <div class="container-fluid px-0">
     <section class="section p-3">
         <div class="section-header d-flex p-3">
             <h2 class="mt-3">
-             <a href="{{route('pos')}}" style="text-decoration:none;" class="text-dark">POS</a>
+                <a href="{{route('pos')}}" style="text-decoration:none;" class="text-dark">POS</a>
             </h2>
             <div class="section-header-breadcrumb d-flex p-3">
                 <div class="breadcrumb-item m-2 ">
@@ -36,7 +37,8 @@
                                 <form action="{{route('pos')}}" type="get" method="GET" class="search-form">
                                     <!-- @csrf -->
                                     <input class="form-control mb-3 search-box search_med" type="text"
-                                        placeholder="Enter a Medicine Name" name="search" value="{{request()->get('search')}}">
+                                        placeholder="Enter a Medicine Name" name="search"
+                                        value="{{request()->get('search')}}">
                                     <button type="submit" id="s_m_submit" hidden>submit</button>
                                 </form>
 
@@ -44,7 +46,7 @@
 
                                     @forelse($adpurchase as $key=> $subpurchase)
                                     <div class="col-lg-3 col-md-4 col-sm-6 mb-2" style="padding: 8px;">
-                                        <div class="card">
+                                        <div class="card ">
                                             @if($subpurchase->medicine->image != null)
                                             <img class="card-img-top mb-2 "
                                                 src="{{asset('/uploads/medicine/'.$subpurchase->medicine->image)}}"
@@ -52,22 +54,25 @@
                                             @endif
                                             <div class="card-body text-center" style="padding: 0.2rem;">
                                                 @if($subpurchase->stock <= $subpurchase->stock_alert)
-                                                    <span class="position-absolute top-0 start-100 translate-middle badge text-bg-danger rounded-pill">
+                                                    <span
+                                                        class="position-absolute top-0 start-100 translate-middle badge text-bg-danger rounded-pill">
                                                         {{$subpurchase->stock}}
                                                     </span>
-                                                @else
-                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style=" background-color: #008080;">
-                                                    {{$subpurchase->stock}}
+                                                    @else
+                                                    <span
+                                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                                                        style=" background-color: #008080;">
+                                                        {{$subpurchase->stock}}
                                                     </span>
-                                                @endif
-                                                <h6 class="card-title " style="font-size: inherit;">
-                                                    {{$subpurchase->medicine->name}}
-                                                </h6>
-                                                <a href="{{route('addtocart',$subpurchase->medicine->id)}}"
-                                                    class="stretched-link" style="text-decoration: none;">
-                                                    <h6 class="text-primary" style="font-size: inherit;">৳
-                                                        {{$subpurchase->medicine->price}}</h6>
-                                                </a>
+                                                    @endif
+                                                    <h6 class="card-title mb-3 mt-2" style="font-size: inherit;">
+                                                        {{$subpurchase->medicine->name}}
+                                                    </h6>
+                                                    <a href="{{route('addtocart',$subpurchase->medicine->id)}}"
+                                                        class="stretched-link " style="text-decoration: none;">
+                                                        <h6 class="text-primary" style="font-size: inherit;">৳
+                                                            {{$subpurchase->medicine->price}}</h6>
+                                                    </a>
                                             </div>
                                         </div>
                                     </div>
@@ -89,9 +94,10 @@
                             <div class="card-header">
                                 <div class="form-group">
                                     <select name="customer_id" id="contact_id" class="form-control cus_search p-2">
-                                        <option value="0">Walk In Customer</option>
+                                        <option value="" disable hidden>Walk In Customer</option>
                                         @foreach($customers as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->customer_name}}</option>
+                                        <option class="option" value="{{$customer->id}}">{{$customer->customer_name}}
+                                        </option>
                                         @endforeach
                                         <!-- <option value="2">Customer</option>
                                         <option value="4">Mahabuba</option> -->
@@ -128,7 +134,9 @@
                                                                 value="{{$data->qty}}"
                                                                 class="form-control vat_amount QTY"
                                                                 style=" padding: 0px; text-align: center; border-radius:10px;">
-                                                            <button type="submit" class="btn btn-link ">
+                                                            <button type="submit" class="btn btn-link "
+                                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                title="Update QTY">
                                                                 <!-- <i class="fas fa-plus"></i> -->
                                                                 <i class="fa-solid fa-rotate-right"></i>
                                                             </button>
@@ -138,7 +146,8 @@
 
                                                 <td colspan="1">
                                                     <div class="input-group">
-                                                        <p id="price" name="price"  style="margin-bottom: 0rem;" >৳ {{$data->price}}</p>
+                                                        <p id="price" name="price" style="margin-bottom: 0rem;">৳
+                                                            {{$data->price}}</p>
                                                     </div>
                                                 </td>
                                                 @php
@@ -146,14 +155,15 @@
                                                 @endphp
                                                 <td colspan="1">
 
-                                                    <p style="margin-bottom: 0rem;" >৳ {{$total}}</p>
+                                                    <p style="margin-bottom: 0rem;">৳ {{$total}}</p>
                                                 </td>
                                                 <td colspan="1">
                                                     <!-- <input type="button" value=" - "
                                                         class="text-light border-0 m-2 bg-danger  rounded-2"
                                                         onclick="ob_adRows.delRow(this)" /> -->
                                                     <a href="{{route('deletecart', $data ->rowId )}}"
-                                                        class="btn text-danger" role="button">
+                                                        class="btn text-danger" role="button" data-bs-toggle="tooltip"
+                                                        data-bs-placement="bottom" title="Delete">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
 
@@ -173,9 +183,9 @@
 
                                                 <td colspan="3" style="text-align: end;">Vat(5%)</td>
                                                 @php
-                                                    $net_total = (float)str_replace(',','',Cart::subtotal());
-                                                    $vat = $net_total*5/100;
-                                                    $total =  $net_total+$vat;
+                                                $net_total = (float)str_replace(',','',Cart::subtotal());
+                                                $vat = $net_total*5/100;
+                                                $total = $net_total+$vat;
                                                 @endphp
                                                 <td>
                                                     <div class="input-group">
@@ -189,7 +199,8 @@
                                                 <td colspan="3" style="text-align: end;">Discount</td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <input type="number" step="0.1" name="discount_amount" class="form-control discoount_amount" value="0">
+                                                        <input type="number" step="0.1" name="discount_amount"
+                                                            class="form-control discoount_amount" value="0">
                                                     </div>
 
                                                 </td>
@@ -199,7 +210,8 @@
 
                                                 <td colspan="3" style="text-align: end;">Total</td>
                                                 <td>
-                                                    <input type="number" class="form-control" name="total_amount" id="total_amount" value="{{round($total)}}" readonly>
+                                                    <input type="number" class="form-control" name="total_amount"
+                                                        id="total_amount" value="{{round($total)}}" readonly>
 
                                                 </td>
                                                 <td></td>
@@ -216,8 +228,8 @@
                                             <tr>
                                                 <td colspan="3" style="text-align: end;">Change Amount</td>
                                                 <td>
-                                                    <input type="number" step="0.1" value="0" name="change_amount" class="form-control change_amount border-0"
-                                                        id="change_amount">
+                                                    <input type="number" step="0.1" value="0" name="change_amount"
+                                                        class="form-control change_amount border-0" id="change_amount">
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -268,9 +280,9 @@
 $(document).ready(function() {
     // customer search
     $(document).ready(function() {
-    $('.cus_search').select2();
+        $('.cus_search').select2();
     });
-    
+
     $(document).on('change', '.QTY', function() {
         var i = 1;
         var i = $(this).parents('tr').attr('id');
@@ -281,30 +293,29 @@ $(document).ready(function() {
         total();
     });
     $(document).on('keyup', '.search_med', function() {
-        setInterval(function(){
+        setInterval(function() {
             $('#s_m_submit').click();
-        },1000)
+        }, 1000)
     });
 
-    $(document).on('change','.discoount_amount',function(){
+    $(document).on('change', '.discoount_amount', function() {
         let discount = $(this).val();
         let total = $('#total_amount').val();
         let afterDiscount = total - discount;
         $('#total_amount').val(afterDiscount.toFixed());
     });
 
-    $(document).on('change','.paid_amount',function()
-    {
+    $(document).on('change', '.paid_amount', function() {
         var paid_amount = parseFloat($(this).val());
         var total = parseFloat($("#total_amount").val());
-        if(paid_amount > 0){
+        if (paid_amount > 0) {
             $('#save').removeClass("disabled");
         }
-        if(total < paid_amount){
+        if (total < paid_amount) {
             var change = paid_amount - total;
             $("#change_amount").val(change.toFixed());
             $("#due_amount").val('0');
-        }else{
+        } else {
             var due = total - paid_amount;
             $("#due_amount").val(due.toFixed());
             $("#change_amount").val('0');

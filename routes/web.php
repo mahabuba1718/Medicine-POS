@@ -58,7 +58,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/editcus/{cus_id}',[AdminController::class,'editcus'])->name('editcus');
     Route::put('/update/customer',[AdminController::class,'updatecus'])->name('updatecus');
     Route::delete('/deletecus',[AdminController::class,'deletecus'])->name('deletecus');
-    Route::get('/cus_status/{cus_id}',[AdminController::class,'cus_status'])->name('cus_status');
+    Route::get('/cus_status/{id}',[AdminController::class,'cus_status'])->name('cus_status');
 
     // supplier
     Route::get('/supplier',[AdminController::class,'contact_supplier'])->name('contact_supplier');
@@ -130,6 +130,9 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 
     // pos sale list
     Route::get('/possale',[AdminController::class,'possale'])->name('possale');
+    Route::put('/due_pos',[AdminController::class,'due_pos'])->name('due_pos');
+    Route::post('/deletepos',[AdminController::class,'deletepos'])->name('deletepos');
+
 
     // account
     Route::get('/expense',[AdminController::class,'account_expense'])->name('account_expense');
@@ -150,11 +153,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 // search
 // Route::get('/search',[AdminController::class,'searchmed'])->name('searchmed');
 
-
-
-
-
-//Route::get('/add_more',[AdminController::class,'add_more'])->name('add_more');
 
 
 

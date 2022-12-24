@@ -142,6 +142,19 @@
                                     <!-- pharmacist history -->
                                     <div class="card-body">
                                         <div class="">
+                                            <!-- <div>
+                                                <form action="{{route('contact_pharmacist')}}" method="GET">
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control" placeholder="Search"
+                                                            aria-label="Search" aria-describedby="button-addon2"
+                                                            name="search">
+                                                        <button class="btn btn-outline-secondary" type="submit"
+                                                            id="button-addon2">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div> -->
                                             <div class="table_section">
                                                 <table class="table table-striped text-center"
                                                     style="vertical-align: middle;">
@@ -363,7 +376,7 @@
                                                                 <div class=" form-switch">
                                                                     <input class="form-check-input " type="checkbox"
                                                                         role="switch" id="flexSwitchCheckDefaultc"
-                                                                        value="{{$customers->cus_id}}"
+                                                                        value="{{$customers->id}}"
                                                                         {{$customers->status == 1 ? 'checked':''}}>
                                                                 </div>
                                                             </td>

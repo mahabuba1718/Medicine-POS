@@ -25,9 +25,9 @@
     <div class="dropdown  me-5">
         <button class="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             @if(auth()->user()->image == null)
-            <img src="{{asset('assets/backend/img/med.webp')}}" alt="image" class="rounded-circle mr-1" style="width: 30px;">
+            <img src="{{asset('assets/backend/img/med.webp')}}" alt="image" class="rounded-circle mr-1" style="width: 43px; height: 40px;">
             @else
-            <img src="{{asset('uploads/pharmacist/'.auth()->user()->image)}}" alt="image" class="rounded-circle mr-1" style="width: 45px;">
+            <img src="{{asset('uploads/pharmacist/'.auth()->user()->image)}}" alt="image" class="rounded-circle mr-1" style="    width: 43px; height: 40px;">
             @endif
         </button>
         <ul class="dropdown-menu">
