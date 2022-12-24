@@ -227,7 +227,7 @@
         </div>
     </section>
 </div>
-
+<!-- purchase delete modal -->
 <div class="modal" id="PurchDelete">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
@@ -258,6 +258,7 @@
     </div>
 </div>
 
+<!-- due update modal -->
 <div class="modal" id="PurchDue">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
@@ -292,6 +293,7 @@
     </div>
 </div>
 
+<!-- purchase approve modal -->
 <div class="modal" id="PurchApprove">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
@@ -339,13 +341,11 @@
 
     $(document).on('click', '.purch_delete', function() {
         var delete_id = $(this).val();
-        // alert(update_id);
         $("#PurchDelete").modal('show');
         $("#DelPurchId").val(delete_id);
     });
     $(document).on('click', '.purch_due', function() {
         var id = $(this).val();
-        // alert(update_id);
         $("#PurchDue").modal('show');
         $("#PurchId").val(id);
     });
@@ -353,7 +353,6 @@
     $(document).on('click', '.purch_approve', function() {
         var approve_id = $(this).val();
         var approve_code = $(this).attr('data-purchase-code');
-        // alert(update_id);
         $("#PurchApprove").modal('show');
         $("#ApporvePurchId").val(approve_id);
         $(".purchase_code").text(approve_code);

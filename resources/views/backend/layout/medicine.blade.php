@@ -12,10 +12,6 @@
     padding: 1rem !important;
 }
 
-/* .p-2 {
-    padding: 2rem !important;
-} */
-
 .table:not(.table-sm)> :not(caption)>*>* {
     padding: 0rem;
 }
@@ -290,11 +286,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <!-- <button type="button" class="m-1 btn float-right text-light"
-                                                        style="font-size: 0.7rem; background-color: #008080;"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="Edit"> -->
                                                     <a href="{{route('editmedicine',$medicine->id)}}"
                                                         class="m-1 btn float-right text-light"
                                                         style="font-size: 0.7rem; background-color: #008080;"
@@ -302,7 +293,6 @@
                                                         title="Edit">
                                                         <i class="fa-solid fa-pencil"></i>
                                                     </a>
-                                                    <!-- </button> -->
                                                     <button type="button"
                                                         class="m-1 btn btn-danger deleteRow float-right"
                                                         style="font-size: 0.7rem;" data-bs-toggle="tooltip"
@@ -381,7 +371,6 @@
         // view medicine description 
         $(document).on('click', '.viewBtn', function() {
             var update_id = $(this).val();
-            // alert(update_id);
             $("#myModal1").modal('show');
 
             $.ajax({
@@ -403,7 +392,6 @@
         // delete medicine
         $(document).on('click', '.deleteRow', function() {
             var del_id = $(this).val();
-            // alert(update_id);
             $("#myModalp").modal('show');
             $('#DelMedId').val(del_id);
         });

@@ -1405,7 +1405,7 @@ class AdminController extends Controller
             return redirect()->route('invoice',$pos->id)->with('Order Placed Successfully!');
         }
         else{
-            return back()->with('error','Please Add Medicine And Customer First!');
+            return back()->with('error','Please Add Medicine And Recipient First!');
         }
 
     }
@@ -1467,7 +1467,7 @@ class AdminController extends Controller
     // pos sale list
     public function possale()
     {
-        $pos = Pos::paginate(2);
+        $pos = Pos::paginate(5);
         return view('backend.layout.possale',compact('pos'));
     }
 
@@ -1479,7 +1479,7 @@ class AdminController extends Controller
     // account= expense
     public function account_expense()
     {
-        $expenses=Purchase::where('status',1)->paginate(2);
+        $expenses=Purchase::where('status',1)->paginate(5);
         $expenseTotal = $expenses->sum('paid_amount');
         $incomes=Pos::paginate(2);
         $incomeTotal = $incomes->sum('paid_amount');
@@ -1508,7 +1508,7 @@ class AdminController extends Controller
     {
         $incomes=Pos::paginate(2);
         $incomeTotal = $incomes->sum('paid_amount');
-        $expenses=Purchase::paginate(2);
+        $expenses=Purchase::paginate(5);
         $expenseTotal = $expenses->sum('paid_amount');
         return view('backend.layout.account', compact('incomes','incomeTotal','expenses','expenseTotal'));
     }

@@ -740,7 +740,6 @@ $(document).ready(function() {
     // supplier delete
     $(document).on('click', '.deleteRow2', function() {
         var delete_id = $(this).val();
-        // alert(update_id);
         $("#myModals").modal('show');
         $("#deletingIds").val(delete_id);
     });

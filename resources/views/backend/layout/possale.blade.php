@@ -23,12 +23,6 @@
                     <div class="card">
                         <div class="card-header d-flex p-3">
                             <h4>POS Sale</h4>
-                            <!-- <div class="card-header-form">
-                                <a href="#" class="btn float-right text-light" style="background-color: #008080;">
-                                    <i class="fa fa-list"></i>
-                                    Draft List
-                                </a>
-                            </div> -->
                         </div>
                         <div class="card-body">
                             <div class="">
@@ -103,24 +97,6 @@
                                                         data-bs-placement="bottom" title="Delete">
                                                         <i style="font-size: 15px;" class="fas fa-trash my-2"></i>
                                                     </button>
-                                                    <!-- <div class="dropdown">
-                                                        <button type="button" class="btn dropdown-toggle text-light" style="background-color: #008080;"
-                                                            data-bs-toggle="dropdown">
-                                                            Action
-                                                        </button>
-                                                        <ul class="dropdown-menu option">
-                                                            <li><a class="dropdown-item" href="#">
-                                                                <i style="font-size: 10px;"
-                                                                        class="fas fa-pencil-alt my-2"> Approve</i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="#">
-                                                                    <i style="font-size: 10px;"
-                                                                        class="fas fa-trash my-2"> Delete</i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div> -->
                                                 </td>
                                             </tr>
                                             @endforeach

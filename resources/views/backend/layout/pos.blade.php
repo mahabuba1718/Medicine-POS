@@ -99,8 +99,6 @@
                                         <option class="option" value="{{$customer->id}}">{{$customer->customer_name}}
                                         </option>
                                         @endforeach
-                                        <!-- <option value="2">Customer</option>
-                                        <option value="4">Mahabuba</option> -->
                                     </select>
                                     <span class="text-danger"> @error('customer_id') {{$message}} @enderror</span>
                                 </div>
@@ -137,7 +135,6 @@
                                                             <button type="submit" class="btn btn-link "
                                                                 data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                                 title="Update QTY">
-                                                                <!-- <i class="fas fa-plus"></i> -->
                                                                 <i class="fa-solid fa-rotate-right"></i>
                                                             </button>
                                                         </div>
@@ -158,9 +155,6 @@
                                                     <p style="margin-bottom: 0rem;">৳ {{$total}}</p>
                                                 </td>
                                                 <td colspan="1">
-                                                    <!-- <input type="button" value=" - "
-                                                        class="text-light border-0 m-2 bg-danger  rounded-2"
-                                                        onclick="ob_adRows.delRow(this)" /> -->
                                                     <a href="{{route('deletecart', $data ->rowId )}}"
                                                         class="btn text-danger" role="button" data-bs-toggle="tooltip"
                                                         data-bs-placement="bottom" title="Delete">

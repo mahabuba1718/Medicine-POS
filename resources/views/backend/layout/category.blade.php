@@ -771,7 +771,6 @@
             // category edit
             $(document).on('click', '.category_edit', function () {
                 var update_id = $(this).val();
-                // alert(update_id);
                 $("#myModal1").modal('show');
 
                 $.ajax({
@@ -788,7 +787,6 @@
             // unit edit
             $(document).on('click', '.unit_edit', function () {
                 var update_id = $(this).val();
-                // alert(update_id);
                 $("#myModal2").modal('show');
 
                 $.ajax({
@@ -805,7 +803,6 @@
             // type edit
             $(document).on('click', '.type_edit', function () {
                 var update_id = $(this).val();
-                // alert(update_id);
                 $("#myModal3").modal('show');
 
                 $.ajax({
@@ -822,14 +819,12 @@
             });
             $(document).on('click', '.category_delete', function () {
                 var delete_id = $(this).val();
-                // alert(delete_id);
                 $("#CategoryDelete").modal('show');
                 $("#DelCatId").val(delete_id);
 
             });
             $(document).on('click', '.unit_delete', function () {
                 var delete_id = $(this).val();
-                // alert(delete_id);
                 $("#UnitDelete").modal('show');
                 $("#DelUnitId").val(delete_id);
 
@@ -838,7 +833,6 @@
             // type modal delete
             $(document).on('click', '.type_delete', function () {
                 var delete_id = $(this).val();
-                // alert(update_id);
                 $("#TypeDelete").modal('show');
                 $("#DelTypeId").val(delete_id);
             });

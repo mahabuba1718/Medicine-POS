@@ -49,7 +49,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/editpharma/{pharm_id}',[AdminController::class,'editpharma'])->name('editpharma');
     Route::put('/update/pharmacist',[AdminController::class,'updatepharm'])->name('updatepharm');
     Route::delete('/deletepharma',[AdminController::class,'deletepharma'])->name('deletepharma');
-    // Route::get('/deltpharm/{pharm_id}',[AdminController::class,'deltpharm'])->name('deltpharm');
     Route::get('/status/{id}',[AdminController::class,'status'])->name('status');
 
     // contact=customer
@@ -66,7 +65,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/editsup/{sup_id}',[AdminController::class,'editsup'])->name('editsup');
     Route::put('/update/supplier',[AdminController::class,'updatesup'])->name('updatesup');
     Route::get('/deletesup',[AdminController::class,'deletesup'])->name('deletesup');
-    // Route::get('/deltsupe/{sup_id}',[AdminController::class,'deltsupe'])->name('deltsupe');
     Route::get('/sup_status/{id}',[AdminController::class,'sup_status'])->name('sup_status');
 
     // category
@@ -100,7 +98,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/viewmed/{med_id}',[AdminController::class,'viewmed'])->name('viewmed');
     Route::put('/update/medicine',[AdminController::class,'updatemedicine'])->name('updatemedicine');
     Route::post('/deletemedicine',[AdminController::class,'deletemedicine'])->name('deletemedicine');
-    // Route::get('/deletemed/{med_id}',[AdminController::class,'deletemed'])->name('deletemed');
     Route::get('/med_status/{id}',[AdminController::class,'med_status'])->name('med_status');
 
     // purchase
@@ -114,18 +111,19 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/add_purchase',[AdminController::class,'addpurchase'])->name('add_purchase');
     Route::get('/purchase/find_med/{id}',[AdminController::class,'purchase_find_med'])->name('purchase_find_med');
     Route::post('/create/purchase',[AdminController::class,'adpurchase'])->name('adpurchase');
+
+    // purchase invoice
     Route::get('/purchase_invoice/{id}',[AdminController::class,'purchase_invoice'])->name('purchase_invoice');
 
     // pos
     Route::get('/pos',[AdminController::class,'pos'])->name('pos');
-    // Route::get('/pos-search', [AdminController::class,'searchmedicine'])->name('searchmedicine');
     Route::get('/pos-add/{id}',[AdminController::class,'addtocart'])->name('addtocart');
     Route::post('/cart_increment',[AdminController::class,'cart_increment'])->name('cart_increment');
     Route::get('/pos-delete/{id}',[AdminController::class,'deletecart'])->name('deletecart');
     Route::get('/pos-clear',[AdminController::class,'pos_clear'])->name('pos_clear');
     Route::post('/create/possale',[AdminController::class,'pos_sale'])->name('pos_sale');
 
-    // invoice
+    // sale invoice
     Route::get('/invoice/{id}',[AdminController::class,'invoice'])->name('invoice');
 
     // pos sale list
@@ -147,11 +145,8 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 
 });
 
-//Route::post('/create/account',[AdminController::class,'expense'])->name('expense');
 
 
-// search
-// Route::get('/search',[AdminController::class,'searchmed'])->name('searchmed');
 
 
 

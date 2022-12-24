@@ -72,14 +72,6 @@
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <!-- <tfoot>
-                                                <tr>
-                                                    <td colspan="1" class="text-right">Total</td>
-                                                    <td></td>
-                                                    <td>3400</td>
-                                                    <td></td>
-                                                </tr>
-                                            </tfoot> -->
                                         </table>
                                     </div>
                                     <div class="card-footer">
