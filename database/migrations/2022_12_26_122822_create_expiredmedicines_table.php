@@ -13,18 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subpurchases', function (Blueprint $table) {
+        Schema::create('expiredmedicines', function (Blueprint $table) {
             $table->id();
-            $table->string('purchase_id');
-//            $table->string('purchase_no');
-            $table->string('madicine_id');
-//            $table->string('date');
+            $table->string('subpurchase_id');
             $table->string('expire_date');
             $table->string('quantity');
-            $table->string('alert');
-            $table->string('price');
-            $table->string('sub_total');
-            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }
@@ -36,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subpurchases');
+        Schema::dropIfExists('expiredmedicines');
     }
 };

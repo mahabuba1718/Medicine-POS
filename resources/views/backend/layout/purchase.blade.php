@@ -45,8 +45,10 @@
                                                 <th scope="col" class="" width="9%">Total</th>
                                                 <th scope="col" class="" width="9%">Paid</th>
                                                 <th scope="col" class="" width="10%">Change/Due</th>
+                                                @if(Auth::user()->role_id == 1)
                                                 <th scope="col" class="" width="9%">Status</th>
                                                 <th scope="col" class="" width="10%">Action</th>
+                                                @endif
                                                 <th scope="col" class="" width="11%">View Purchase</th>
                                             </tr>
                                         </thead>
@@ -69,6 +71,7 @@
                                                     0
                                                     @endif
                                                 </td>
+                                                @if(Auth::user()->role_id == 1)
                                                 <td>
                                                     @if ($purchase->status == 0)
                                                     <span class="badge bg-danger" style="padding: 7px;">Pending</span>
@@ -116,6 +119,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
+                                                @endif
                                                 <td>
                                                     <button type="button" data-bs-toggle="modal"
                                                         class="btn text-light view" style=" background-color:#25aa9e;"

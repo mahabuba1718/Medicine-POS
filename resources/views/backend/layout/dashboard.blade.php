@@ -60,6 +60,16 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-6 ">
+            <div class="features-col" style="background-color: #8d78ab; color:white">
+                <h5 class="text-light ">Medicine</h5>
+                <i class="fa-2x p-2 mb-3 fa-solid fa-pills"></i>
+                <div class=" ">
+                    <h4 class="text-light ">{{$add_med}}</h4>
+                    <h5 class="text-light ">Total Added Medicine</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 ">
             <div class="features-col" style="background-color: #c78e5c; color:white">
                 <h5 class="text-light ">Stocked Medicine</h5>
                 <i class="fa-2x p-2 mb-3 fa-solid fa-capsules"></i>

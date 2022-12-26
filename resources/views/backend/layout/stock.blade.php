@@ -1,10 +1,10 @@
 @extends('backend.master')
 @section('content')
 <style>
-    .d-flex{
-        display: flex!important;
-        justify-content: space-between;
-    }
+.d-flex {
+    display: flex !important;
+    justify-content: space-between;
+}
 </style>
 <div class="container-fluid px-0">
     <section class="container-fluid my-3">
@@ -53,8 +53,10 @@
                                         <h4>Stock Report</h4>
                                         <form action="{{route('stock_report')}}" method="GET">
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2" name="search">
-                                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                                                <input type="text" class="form-control" placeholder="Search"
+                                                    aria-label="Search" aria-describedby="button-addon2" name="search">
+                                                <button class="btn btn-outline-secondary" type="submit"
+                                                    id="button-addon2">
                                                     <i class="fa-solid fa-magnifying-glass"></i>
                                                 </button>
                                             </div>
@@ -64,7 +66,8 @@
                                     <div class="card-body">
                                         <div class="">
                                             <div class="table_section p-3">
-                                                <table class="table table-striped text-center" style="vertical-align: middle;" >
+                                                <table class="table table-striped text-center"
+                                                    style="vertical-align: middle;">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" class="">#</th>
@@ -81,17 +84,18 @@
                                                             <td scope="col" class="">{{$stock_b->name}}</td>
                                                             <td scope="col" class="">
                                                                 @if($stock_b->stock <= $stock_b->stock_alert)
-                                                                    <span class="badge text-bg-danger">{{$stock_b->stock}}</span>
-                                                                @else
+                                                                    <span
+                                                                        class="badge text-bg-danger">{{$stock_b->stock}}</span>
+                                                                    @else
                                                                     <span class="">{{$stock_b->stock}}</span>
-                                                                @endif
+                                                                    @endif
                                                             </td>
                                                             <td scope="col" class="">{{$stock_b->stock_alert}}</td>
                                                             <td scope="col" class="">
                                                                 @if($stock_b->status == 1)
-                                                                    <p>Active</p>
+                                                                <p>Active</p>
                                                                 @else
-                                                                    <p>Inactive</p>
+                                                                <p>Inactive</p>
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -133,8 +137,11 @@
                                         <h4>Expiry Medicine Report</h4>
                                         <form action="{{route('expiry_report')}}" method="GET">
                                             <div class="input-group mb-3">
-                                                <input type="date" class="form-control" placeholder="q" aria-label="q" aria-describedby="button-addon2" name="q">
-                                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                                                <input type="date" name="begin" class="form-control" placeholder="dd-mm-yyyy " value="">
+                                                <input type="date" placeholder="dd-mm-yyyy " class="form-control" placeholder="q"
+                                                    aria-label="q" aria-describedby="button-addon2" name="q">
+                                                <button class="btn btn-outline-secondary" type="submit"
+                                                    id="button-addon2">
                                                     <i class="fa-solid fa-magnifying-glass"></i>
                                                 </button>
                                             </div>
@@ -143,7 +150,8 @@
                                     <div class="card-body">
                                         <div class="">
                                             <div class="table_section p-3">
-                                                <table class="table table-striped text-center" style="vertical-align: middle;" >
+                                                <table class="table table-striped text-center"
+                                                    style="vertical-align: middle;">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" class="">#</th>
@@ -159,17 +167,24 @@
                                                         @forelse($expired as $key=>$expires)
                                                         <tr class="text-center">
                                                             <td scope="col" class="">{{$key + 1}}</td>
-                                                            <td scope="col" class="">{{$expires->medicine->name}}</td>
-                                                            <td scope="col" class="my-auto">{{$expires->adpurchase->supplier_info->name}}</td>
-                                                            <td scope="col" class="my-auto">{{$expires->adpurchase->date}}</td>
+                                                            <td scope="col" class="">
+                                                                {{$expires->subpurchase->medicine->name}}</td>
+                                                            <td scope="col" class="my-auto">
+                                                                {{$expires->subpurchase->adpurchase->supplier_info->name}}
+                                                            </td>
+                                                            <td scope="col" class="my-auto">
+                                                                {{$expires->subpurchase->adpurchase->date}}</td>
                                                             <td scope="col" class="">{{$expires->expire_date}}</td>
-                                                            <td scope="col" class="">{{$expires->adpurchase->purchase_no}}</td>
-                                                            <td scope="col" class="">{{$expires->medicine->stock->stock}}</td>
+                                                            <td scope="col" class="">
+                                                                {{$expires->subpurchase->adpurchase->purchase_no}}</td>
+                                                            <td scope="col" class="">{{$expires->quantity}}</td>
                                                         </tr>
                                                         @empty
-                                                            <tr>
-                                                                <td colspan="7"><h6>No Data Found.</h6></td>
-                                                            </tr>
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <h6>No Data Found.</h6>
+                                                            </td>
+                                                        </tr>
                                                         @endforelse
                                                     </tbody>
                                                 </table>

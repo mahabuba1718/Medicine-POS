@@ -32,7 +32,9 @@
                 role="tabpanel" aria-labelledby="pharmacist-tab" tabindex="0">
                 <section class="section p-2">
                     <div class="section-header d-flex p-3">
-                        <h3 class="mt-3">Pharmacist</h3>
+                        <a href="{{route('contact_pharmacist')}}" style="text-decoration:none;" class="text-dark">
+                            <h3 class="mt-3">Pharmacist</h3>
+                        </a>
                         <div class="section-header-breadcrumb d-flex p-3">
                             <div class="breadcrumb-item m-2 ">
                                 <a href="{{route('dashboard')}}">Home</a>
@@ -142,19 +144,23 @@
                                     <!-- pharmacist history -->
                                     <div class="card-body">
                                         <div class="">
-                                            <!-- <div>
-                                                <form action="{{route('contact_pharmacist')}}" method="GET">
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" placeholder="Search"
-                                                            aria-label="Search" aria-describedby="button-addon2"
-                                                            name="search">
-                                                        <button class="btn btn-outline-secondary" type="submit"
-                                                            id="button-addon2">
-                                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4">
+                                                    <form action="{{route('contact_pharmacist')}}" method="GET">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" placeholder="Search"
+                                                                aria-label="Search" name="search_pha"
+                                                                aria-describedby="button-addon2" name="search">
+                                                            <button class="btn btn-outline-secondary" type="submit"
+                                                                id="button-addon2">
+                                                                <i class="fa-solid fa-magnifying-glass"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                             <div class="table_section">
                                                 <table class="table table-striped text-center"
                                                     style="vertical-align: middle;">
@@ -166,12 +172,14 @@
                                                             <th scope="col" class="">Name</th>
                                                             <th scope="col" class="">Email</th>
                                                             <th scope="col" class="">Phone</th>
+                                                            @if(Auth::user()->role_id == 1)
                                                             <th scope="col" class="">Status</th>
                                                             <th scope="col" class="">Action</th>
+                                                            @endif
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($pharma as $key=> $contact)
+                                                        @forelse($pharma as $key=> $contact)
                                                         @if($contact->role_id ==2 )
                                                         <tr class="text-center">
                                                             <td scope="col" class="">{{$key+1}}</td>
@@ -191,6 +199,7 @@
                                                             <td scope="col" class="my-auto">{{$contact-> name}}</td>
                                                             <td scope="col" class="">{{$contact-> email}}</td>
                                                             <td scope="col" class="">{{$contact-> phone}}</td>
+                                                            @if(Auth::user()->role_id == 1)
                                                             <td scope="col" class=" ">
                                                                 <div class=" form-switch">
                                                                     <input class="form-check-input " type="checkbox"
@@ -217,11 +226,13 @@
                                                                     <i class="fa-solid fa-trash"></i>
                                                                 </button>
                                                             </td>
+                                                            @endif
                                                         </tr>
                                                         @endif
-                                                        @endforeach
+                                                        @empty
+                                                        <h4 class="text-center">No Match Found Here.</h4>
+                                                        @endforelse
                                                     </tbody>
-
                                                 </table>
                                             </div>
                                         </div>
@@ -336,6 +347,23 @@
                                     </form>
                                     <div class="card-body">
                                         <div class="">
+                                            <div class="row">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4">
+                                                    <form action="{{route('contact_customer')}}" method="GET">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" placeholder="Search"
+                                                                aria-label="Search" name="search_cus"
+                                                                aria-describedby="button-addon2" name="search">
+                                                            <button class="btn btn-outline-secondary" type="submit"
+                                                                id="button-addon2">
+                                                                <i class="fa-solid fa-magnifying-glass"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                             <div class="table_section p-3">
                                                 <table class="table table-striped text-center"
                                                     style="vertical-align: middle;">
@@ -352,7 +380,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($customer as $key=> $customers)
+                                                        @forelse($customer as $key=> $customers)
                                                         <tr class="text-center">
                                                             <td scope="col" class="">{{$key+1}}</td>
                                                             <td>
@@ -400,7 +428,9 @@
 
                                                             </td>
                                                         </tr>
-                                                        @endforeach
+                                                        @empty
+                                                        <h4 class="text-center ">No Match Found Here.</h4>
+                                                        @endforelse
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -516,6 +546,23 @@
                                     </form>
                                     <div class="card-body">
                                         <div class="">
+                                            <div class="row">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-lg-4">
+                                                    <form action="{{route('contact_supplier')}}" method="GET">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" placeholder="Search"
+                                                                aria-label="Search" name="search_sup"
+                                                                aria-describedby="button-addon2" name="search">
+                                                            <button class="btn btn-outline-secondary" type="submit"
+                                                                id="button-addon2">
+                                                                <i class="fa-solid fa-magnifying-glass"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                             <div class="table_section p-3">
                                                 <table class="table table-striped text-center"
                                                     style="vertical-align: middle;">

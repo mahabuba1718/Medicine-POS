@@ -11,6 +11,13 @@
 .p-1 {
     padding: 1rem !important;
 }
+#viewImg img{
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 7px;
+
+}
 
 .table:not(.table-sm)> :not(caption)>*>* {
     padding: 0rem;
@@ -215,9 +222,11 @@
                                                 </th>
                                                 <th scope="col" class="" width="9%" style="padding: 0.7rem;">Purchase
                                                     Price</th>
+                                                @if(Auth::user()->role_id == 1)
                                                 <th scope="col" class="" width="7%" style="padding: 0.7rem;">Status</th>
                                                 <th scope="col" class="" width="13%" style="padding: 0.7rem;">Action
                                                 </th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -239,6 +248,7 @@
                                                 <td scope="col" class="">{{$medicine->type->name}}</td>
                                                 <td scope="col" class="">৳ {{$medicine->price}}</td>
                                                 <td scope="col" class="">৳ {{$medicine->purchaseprice}}</td>
+                                                @if(Auth::user()->role_id == 1)
                                                 <td scope="col" class=" ">
                                                     <div class=" form-switch">
                                                         <input class="form-check-input " type="checkbox" role="switch"
@@ -265,11 +275,11 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <div class="col-lg-4">
+                                                                        <div class="col-lg-6">
                                                                             <div class="" id="viewImg">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-8">
+                                                                        <div class="col-lg-6 text-start">
                                                                             <div class="p-2" id="viewDes">
                                                                             </div>
                                                                         </div>
@@ -301,6 +311,7 @@
                                                     </button>
 
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -377,13 +388,20 @@
                 type: "GET",
                 url: "/viewmed/" + update_id,
                 success: function(response) {
-                    $("#viewDes").html('');
-                    $("#viewDes").append('\
-                        <p>' + response.med.description + '</p>\
-                    ');
                     $("#viewImg").html('');
                     $("#viewImg").append('\
                         <img src="/uploads/medicine/' + response.med.image + '" alt="Medicine Image">\
+                    ');
+
+                    $("#viewDes").html('');
+                    $("#viewDes").append('\
+                        <p class="mb-0"><span class="fw-semibold">Name: </span>' + response.med.name + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Genericname: </span>' + response.med.genericname + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Cetagory: </span>' + response.c.name + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Unit: </span>' + response.u.name + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Type: </span>' + response.t.name + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Price: </span>' + response.med.price + '</p>\
+                        <p class="mb-0"><span class="fw-semibold">Description: </span>' + response.med.description + '</p>\
                     ');
 
                 }

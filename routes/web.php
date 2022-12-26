@@ -34,10 +34,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     // dashboard
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
 
-    // setting
-    Route::get('/setting',[AdminController::class,'setting'])->name('setting');
-    Route::post('/create/setting/{id}',[AdminController::class,'change'])->name('change');
-
     // profile
     Route::get('/profile',[AdminController::class,'profile'])->name('profile');
     Route::post('/update/profile',[AdminController::class,'update_profile'])->name('update_profile');
@@ -131,10 +127,15 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::put('/due_pos',[AdminController::class,'due_pos'])->name('due_pos');
     Route::post('/deletepos',[AdminController::class,'deletepos'])->name('deletepos');
 
+    Route::prefix('/')->middleware(['admin'])->group(function () {
+        // account
+        Route::get('/expense',[AdminController::class,'account_expense'])->name('account_expense');
+        Route::get('/income',[AdminController::class,'account_income'])->name('account_income');
 
-    // account
-    Route::get('/expense',[AdminController::class,'account_expense'])->name('account_expense');
-    Route::get('/income',[AdminController::class,'account_income'])->name('account_income');
+        // setting
+        Route::get('/setting',[AdminController::class,'setting'])->name('setting');
+        Route::post('/create/setting/{id}',[AdminController::class,'change'])->name('change');
+    });
 
     // stock
     Route::get('/stock_report',[AdminController::class,'stock_report'])->name('stock_report');
@@ -144,11 +145,3 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/logout',[AdminController::class,'logout'])->name('logout');
 
 });
-
-
-
-
-
-
-
-

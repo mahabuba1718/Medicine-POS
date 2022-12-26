@@ -17,6 +17,7 @@ use App\Models\Supplier;
 use App\Models\Type;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Expiredmedicine;
 use Faker\Provider\Medical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,20 +27,37 @@ use File;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use JetBrains\PhpStorm\Pure;
 
 class AdminController extends Controller
 {
     public function master()
     {
         // 
-        $expireds = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->get();
-        foreach ($expireds as $expired){
-            Stock::where('madicine_id',$expired->madicine_id)->update([
-                'status' => 0,
-            ]);
-            Medicine::find($expired->madicine_id)->update([
-                'show_at_purchase' => 0,
-            ]);
+        $expireds = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->where('status',0)->get();
+        if($expireds != null){
+            foreach ($expireds as $expired){
+                $expired->update([
+                    'status' => 1
+                ]);
+                $check_expired = Expiredmedicine::where('subpurchase_id',$expired->id)->first();
+                if($check_expired == null){
+                    Expiredmedicine::create([
+                        'subpurchase_id' => $expired->id,
+                        'expire_date' => $expired->expire_date,
+                        'quantity' => $expired->medicine->stock->stock,
+                    ]);
+                }
+
+                Stock::where('madicine_id',$expired->madicine_id)->update([
+                    'status' => 0,
+                    'stock' => 0
+                ]);
+                Medicine::find($expired->madicine_id)->update([
+                    'show_at_purchase' => 0,
+                ]);
+
+            }
         }
         // view
         return view('backend.layout.home');
@@ -54,6 +72,13 @@ class AdminController extends Controller
     public function register(Request $request)
     {
         // dd($request->all());
+        $request->validate([
+            'name'=> ['required'],
+            'email'=> ['required','unique:users'],
+            'phone'=> ['required'],
+            'image'=> ['required','image','mimes:jpeg,png,jpg'],
+            'password'=> ['required'],
+        ]);
         $filename = '';
         if($request->hasFile('image'))
         {
@@ -266,21 +291,27 @@ class AdminController extends Controller
         $income = Pos::sum('paid_amount');
         $profit = $income - $expense;
         $med_stock = Stock::Join('medicines','stocks.madicine_id','medicines.id')->where('medicines.status',1)->where('stocks.status',1)->count();
+        $add_med = Medicine::count();
         $expired = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->count();
         $pharmacist = User::where('role_id',2)->count();
         $customer = Customer::count();
         $supplier = Supplier::count();
         // dd($purchase,$expense,$sales,$income,$profit,$med_stock,$expired,$pharmacist,$customer,$supplier);
-        return view('backend.layout.dashboard',compact('purchase','expense','sales','income','profit','med_stock','expired','pharmacist','customer','supplier'));
+        return view('backend.layout.dashboard',compact('purchase','expense','sales','income','profit','med_stock','expired','pharmacist','customer','supplier','add_med'));
     }
 
 
     // contact= pharmacist
-    public function contact_pharmacist()
+    public function contact_pharmacist(Request $request)
     {
-        $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(5);
-        $supplier=Supplier::paginate(5);
+        if($request->search_pha != null){
+            $pharma=User::where('role_id','2')->where('name','LIKE','%'.$request->search_pha.'%')->orderBy('id','desc')->paginate(5);
+        }else{
+            $pharma=User::where('role_id','2')->orderBy('id','desc')->paginate(5);
+        }
+
+        $customer=Customer::orderBy('id','desc')->paginate(5);
+        $supplier=Supplier::orderBy('id','desc')->paginate(5);
         return view('backend.layout.contact', compact('pharma','supplier', 'customer'));
     }
 
@@ -313,7 +344,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(),
             [
             'name' => ['required'],
-            'email' => ['required','email'],
+            'email' => ['required','email','unique:users'],
             'password' => ['required'],
             'phone' => ['required'],
             'image' => ['required','image','mimes:jpeg,png,jpg'],
@@ -411,11 +442,16 @@ class AdminController extends Controller
     }
 
     // contact = customer
-    public function contact_customer()
+    public function contact_customer(Request $request)
     {
         $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(5);
-        $supplier=Supplier::paginate(5);
+        
+        if($request->search_cus != null){
+            $customer=Customer::where('customer_name','LIKE','%'.$request->search_cus.'%')->orderBy('id','desc')->paginate(5);
+        }else{
+            $customer=Customer::orderBy('id','desc')->paginate(5);
+        }
+        $supplier=Supplier::orderBy('id','desc')->paginate(5);
         return view('backend.layout.contact', compact('pharma','supplier','customer'));
     }
     public function cus_status($id)
@@ -547,11 +583,15 @@ class AdminController extends Controller
     }
 
     // contact = supplier
-    public function contact_supplier()
+    public function contact_supplier(Request $request)
     {
-        $pharma=User::where('role_id','2')->paginate(5);
-        $customer=Customer::paginate(5);
-        $supplier=Supplier::paginate(5);
+        $pharma=User::where('role_id','2')->orderBy('id','desc')->paginate(5);
+        $customer=Customer::orderBy('id','desc')->paginate(5);
+        if($request->search_sup != null){
+            $supplier=Supplier::where('name','LIKE','%'.$request->search_sup.'%')->orderBy('id','desc')->paginate(5);
+        }else{
+            $supplier=Supplier::orderBy('id','desc')->paginate(5);
+        }
         return view('backend.layout.contact', compact('supplier','pharma', 'customer'));
     }
     public function supplier(Request $request)
@@ -689,16 +729,16 @@ class AdminController extends Controller
      // category
      public function category()
      {
-         $categories=Category::paginate(2);
-         $units=Unit::paginate(2);
-         $types=Type::paginate(2);
+         $categories=Category::orderBy('id','desc')->paginate(2);
+         $units=Unit::orderBy('id','desc')->paginate(2);
+         $types=Type::orderBy('id','desc')->paginate(2);
          return view('backend.layout.category',compact('categories','units','types'));
      }
      public function categories(Request $request)
      {
          $request->validate(
              [
-             'name' => ['required'],
+             'name' => ['required','unique:categories'],
              ]
          );
          Category::create(
@@ -763,16 +803,16 @@ class AdminController extends Controller
     //  unit
      public function unit()
      {
-        $units=Unit::paginate(2);
-        $categories=Category::paginate(2);
-        $types=Type::paginate(2);
+        $units=Unit::orderBy('id','desc')->paginate(2);
+        $categories=Category::orderBy('id','desc')->paginate(2);
+        $types=Type::orderBy('id','desc')->paginate(2);
         return view('backend.layout.category',compact('units','categories','types'));
      }
      public function units(Request $request)
      {
          $request->validate(
              [
-             'name' => ['required'],
+             'name' => ['required','unique:units'],
              ]
          );
          Unit::create(
@@ -835,16 +875,16 @@ class AdminController extends Controller
     //  type
      public function type()
      {
-         $categories=Category::paginate(2);
-         $units=Unit::paginate(2);
-         $types=Type::paginate(2);
+         $categories=Category::orderBy('id','desc')->paginate(2);
+         $units=Unit::orderBy('id','desc')->paginate(2);
+         $types=Type::orderBy('id','desc')->paginate(2);
          return view('backend.layout.category',compact('types','categories','units'));
      }
      public function types(Request $request)
      {
          $request->validate(
              [
-             'type' => ['required'],
+             'type' => ['required','unique:types'],
              ]
          );
          Type::create(
@@ -941,7 +981,7 @@ class AdminController extends Controller
             // dd($request->all());
             $validator = Validator::make($request->all(),
                 [
-                'name' => ['required'],
+                'name' => ['required','unique:medicines'],
                 'genericname' => ['required'],
                 'category_id' => ['required','integer'],
                 'unit_id' => ['required','integer'],
@@ -997,8 +1037,15 @@ class AdminController extends Controller
     public function viewmed($med_id)
      {
          $med = Medicine::find($med_id);
+         $c = Category::find($med->category_id);
+         $u = Unit::find($med->unit_id);
+         $t = Type::find($med->type_id);
          return response([
             'med' => $med,
+            'c'=>$c,
+            'u'=>$u,
+            't'=>$t,
+            
          ]);
      }
     public function editmedicine($med_id)
@@ -1280,7 +1327,7 @@ class AdminController extends Controller
         }
         // cart
         $pos = Cart::content();
-        $customers = Customer::all();
+        $customers = Customer::where('status',1)->get();
         return view('backend.layout.pos',compact('pos','adpurchase','customers'))->withInput('search');
     }
 
@@ -1300,8 +1347,18 @@ class AdminController extends Controller
     }
 
     public function cart_increment(Request $request){
-        cart::update($request->row_id, $request->quantity);
-        return back();
+
+        $cart = Cart::get($request->row_id);
+        
+        $stock = Stock::where('madicine_id',$cart->id)->first();
+        $newStock = $stock->stock - $request->quantity;
+        if($newStock < 0){
+            return back()->with('message','Medicine Is Out Of Stock! Please check.');
+        }else{
+            cart::update($request->row_id, $request->quantity);
+            return back();
+        }
+
     }
 
     public function deletecart($id)
@@ -1467,7 +1524,7 @@ class AdminController extends Controller
     // pos sale list
     public function possale()
     {
-        $pos = Pos::paginate(5);
+        $pos = Pos::all();
         return view('backend.layout.possale',compact('pos'));
     }
 
@@ -1477,14 +1534,26 @@ class AdminController extends Controller
 
 
     // account= expense
-    public function account_expense()
+    public function account_expense(Request $request)
     {
-        $expenses=Purchase::where('status',1)->paginate(5);
-        $expenseTotal = $expenses->sum('paid_amount');
-        $incomes=Pos::paginate(2);
-        $incomeTotal = $incomes->sum('paid_amount');
+        if($request->start == null && $request->ended == null)
+        {
+        $expenses=Purchase::orderBy('id','desc')->where('status',1)->paginate(5);
+        }else{
+            $expenses = Purchase::where('date', '>=', $request->start)->where('date', '<=', $request->ended)->paginate(5);
+            // dd($sale_date);
+        }
+        $expenseYearTotal = Purchase::whereYear('date', Carbon::now()->year)->sum('paid_amount');
+        $expenseMonthTotal = Purchase::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->sum('paid_amount');
+        $expenseDailyTotal = Purchase::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->whereDay('date', Carbon::now()->day)->sum('paid_amount');
+        
+        // dd($expenseYearTotal,$expenseMonthTotal,$expenseDailyTotal);
+        $incomes=Pos::orderBy('id','desc')->paginate(5);
+        $incomeYearTotal = Pos::whereYear('date', Carbon::now()->year)-> sum('paid_amount');
+        $incomeMonthTotal = Pos::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->sum('paid_amount');
+        $incomeDailyTotal = Pos::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)-> whereDay('date', Carbon::now()->day)->sum('paid_amount');
         // dd($total);
-        return view('backend.layout.account', compact('expenses','expenseTotal','incomes','incomeTotal'));
+        return view('backend.layout.account', compact('expenses','incomes','expenseYearTotal','expenseMonthTotal','expenseDailyTotal','incomeYearTotal','incomeDailyTotal','incomeMonthTotal'));
     }
     public function expense(Request $request)
     {
@@ -1504,13 +1573,23 @@ class AdminController extends Controller
     }
 
     // account =income
-    public function account_income()
+    public function account_income(Request $request)
     {
-        $incomes=Pos::paginate(2);
-        $incomeTotal = $incomes->sum('paid_amount');
-        $expenses=Purchase::paginate(5);
-        $expenseTotal = $expenses->sum('paid_amount');
-        return view('backend.layout.account', compact('incomes','incomeTotal','expenses','expenseTotal'));
+        if($request->begin == null && $request->end == null){
+            $incomes=Pos::orderBy('id','desc')->paginate(5);
+            // dd($expired);
+        }else{
+            $incomes = Pos::where('date', '>=', $request->begin)->where('date', '<=', $request->end)->paginate(5);
+            // dd($sale_date);
+        }
+        $incomeYearTotal = Pos::whereYear('date', Carbon::now()->year)-> sum('paid_amount');
+        $incomeMonthTotal = Pos::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->sum('paid_amount');
+        $incomeDailyTotal = Pos::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)-> whereDay('date', Carbon::now()->day)->sum('paid_amount');
+        $expenses=Purchase::orderBy('id','desc')->paginate(5);
+        $expenseYearTotal = Purchase::whereYear('date', Carbon::now()->year)->sum('paid_amount');
+        $expenseMonthTotal = Purchase::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->sum('paid_amount');
+        $expenseDailyTotal = Purchase::whereYear('date', Carbon::now()->year)->whereMonth('date', Carbon::now()->month)->whereDay('date', Carbon::now()->day)->sum('paid_amount');
+        return view('backend.layout.account', compact('expenses','incomes','expenseYearTotal','expenseMonthTotal','expenseDailyTotal','incomeYearTotal','incomeMonthTotal','incomeDailyTotal'));
     }
 
     // stock
@@ -1527,40 +1606,20 @@ class AdminController extends Controller
                         ->where('stocks.status','=',1)
                         ->get(['stocks.*','medicines.name']);
         }
-        $expired = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->get();
+        $expired = Expiredmedicine::all();
         return view('backend.layout.stock',compact('stock','expired'));
     }
     public function expiry_report(Request $request)
     {
         $stock=Stock::all();
-        if($request->q == null){
-            $expired = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->get();
+        if($request->begin == null && $request->q == null){
+            $expired = Expiredmedicine::all();
+            // dd($expired);
         }else{
-            $expired = Subpurchase::where('expire_date','<',Carbon::today()->format('Y-m-d'))->where('expire_date',$request->q)->get();
+            $expired = Expiredmedicine::where('expire_date', '>=', $request->begin)->where('expire_date', '<=', $request->q)->get();
         }
         return view('backend.layout.stock',compact('expired','stock'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // logout
     public function logout(Request $request)

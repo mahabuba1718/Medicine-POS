@@ -41,7 +41,9 @@
                                                 <th scope="col" class="" width="8%">Total</th>
                                                 <th scope="col" class="" width="9%">Paid</th>
                                                 <th scope="col" class="" width="9%">Change / Due </th>
+                                                @if(Auth::user()->role_id == 1)
                                                 <th scope="col" class="" width="11%">Action</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -73,6 +75,7 @@
                                                     0
                                                     @endif
                                                 </td>
+                                                @if(Auth::user()->role_id == 1)
                                                 <td>
                                                     <a href="{{route('invoice',$pos_item->id)}}"
                                                         class="btn btn-sm text-light" data-bs-toggle="tooltip"
@@ -98,6 +101,7 @@
                                                         <i style="font-size: 15px;" class="fas fa-trash my-2"></i>
                                                     </button>
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -105,9 +109,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            {{ $pos->links() }}
-                        </div>
+                       
                     </div>
                 </div>
             </div>

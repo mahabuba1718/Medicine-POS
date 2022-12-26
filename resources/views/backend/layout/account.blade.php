@@ -44,17 +44,40 @@
                     <div class="section-body container-fluid">
                         <div class="row ">
                             <div class=" col-lg-12">
+
                                 <div class="card" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h4>Expense List</h4>
-                                        <h4>Total Expanse : {{$expenseTotal}}</h4>
+                                        <form action="">
+                                            <div class=" mt-2">
+                                                <form action="{{route('account_expense')}}" method="GET">
+                                                    <div class="input-group mb-3">
+                                                        <input type="date" name="start" class="form-control "
+                                                            placeholder="dd-mm-yyyy " value="">
+                                                        <input type="date" class="form-control "
+                                                            placeholder="dd-mm-yyyy " aria-label="q"
+                                                            aria-describedby="button-addon2" name="ended">
+                                                        <button class="btn btn-outline-secondary" type="submit"
+                                                            id="button-addon2">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="card-body p-5">
+                                        <div class="p-2">
+                                            <h6 class="text-end">Total Yearly Expense : {{$expenseYearTotal}}</h6>
+                                            <h6 class="text-end">Total Monthly Expense : {{$expenseMonthTotal}}</h6>
+                                            <h6 class="text-end">Total Daily Expense : {{$expenseDailyTotal}}</h6>
+                                        </div>
                                         <table class="table table-striped text-center table-bordered table_reduced">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" class="">#</th>
-                                                    <th scope="col" class="">Title</th>
+                                                    <th scope="col" class="">Purchase No.</th>
+                                                    <th scope="col" class="">Purchase Date</th>
                                                     <th scope="col" class="">Amount</th>
                                                     <th scope="col" class="">Invoice</th>
                                                 </tr>
@@ -64,10 +87,13 @@
                                                 <tr class="text-center">
                                                     <td scope="col" class="">{{$key+1}}</td>
                                                     <td scope="col" class="">{{$expense->purchase_no}}</td>
+                                                    <td scope="col" class="">{{$expense->date}}</td>
                                                     <td scope="col" class="">{{$expense->paid_amount}}</td>
                                                     <td>
-                                                        <a href="{{route('purchase_invoice',$expense->id)}}" class="btn text-light" style="background-color:#5fb9a9;">Invoice</a>
-                                                     
+                                                        <a href="{{route('purchase_invoice',$expense->id)}}"
+                                                            class="btn text-light"
+                                                            style="background-color:#5fb9a9;">Invoice</a>
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -105,14 +131,36 @@
                                 <div class="card" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h4>Income List</h4>
-                                        <h4>Total Income : {{$incomeTotal}}</h4>
+                                        <form action="">
+                                            <div class=" mt-2">
+                                                <form action="{{route('account_income')}}" method="GET">
+                                                    <div class="input-group mb-3">
+                                                        <input type="date" name="begin" class="form-control"
+                                                            placeholder="dd-mm-yyyy " value="">
+                                                        <input type="date" class="form-control"
+                                                            placeholder="dd-mm-yyyy " aria-label="q"
+                                                            aria-describedby="button-addon2" name="end">
+                                                        <button class="btn btn-outline-secondary" type="submit"
+                                                            id="button-addon2">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="card-body p-5">
+                                        <div class="p-2">
+                                            <h6 class="text-end">Total Yearly Income : {{$incomeYearTotal}}</h6>
+                                            <h6 class="text-end">Total Monthly Income : {{$incomeMonthTotal}}</h6>
+                                            <h6 class="text-end">Total Daily Income : {{$incomeDailyTotal}}</h6>
+                                        </div>
                                         <table class="table table-striped text-center table-bordered table_reduced">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" class="">#</th>
-                                                    <th scope="col" class="">Title</th>
+                                                    <th scope="col" class="">Pos Sale</th>
+                                                    <th scope="col" class="">Sale Date</th>
                                                     <th scope="col" class="">Amount</th>
                                                     <th scope="col" class="">Invoice</th>
                                                 </tr>
@@ -122,13 +170,17 @@
                                                 <tr class="text-center">
                                                     <td scope="col" class="">{{$key + 1}}</td>
                                                     <td scope="col" class="">{{$income->invoice_no}}</td>
+                                                    <td scope="col" class="">{{$income->date}}</td>
                                                     <td scope="col" class="">{{$income->paid_amount}}</td>
                                                     <td>
-                                                        <a href="{{route('invoice',$income->id)}}" class="btn text-light" style="background-color:#5fb9a9;">Invoice</a>
+                                                        <a href="{{route('invoice',$income->id)}}"
+                                                            class="btn text-light"
+                                                            style="background-color:#5fb9a9;">Invoice</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
+
                                             <!-- <tfoot>
                                                 <tr>
                                                     <td colspan="1" class="text-right">Total</td>

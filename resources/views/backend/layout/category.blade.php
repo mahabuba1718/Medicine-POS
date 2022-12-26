@@ -98,8 +98,10 @@
                                                     <th scope="col" class="" width="10">No.</th>
                                                     <th scope="col" class="" width="25">Name</th>
                                                     <th scope="col" class="" width="30">Description</th>
+                                                    @if(Auth::user()->role_id == 1)
                                                     <th scope="col" class="" width="15">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
+                                                    @endif
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -108,6 +110,7 @@
                                                         <td scope="col" class="">{{$key+1}}</td>
                                                         <td scope="col" class="">{{$category->name}}</td>
                                                         <td scope="col" class="">{{$category->description}}</td>
+                                                        @if(Auth::user()->role_id == 1)
                                                         <td scope="col" class=" ">
                                                             <div class=" form-switch">
                                                                 <input class="form-check-input " type="checkbox"
@@ -227,6 +230,7 @@
                                                             </div>
 
                                                         </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -310,8 +314,10 @@
                                                     <th scope="col" class="" width="10">No.</th>
                                                     <th scope="col" class="" width="25">Name</th>
                                                     <th scope="col" class="" width="30">Description</th>
+                                                    @if(Auth::user()->role_id == 1)
                                                     <th scope="col" class="" width="15">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
+                                                    @endif
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -320,6 +326,7 @@
                                                         <td scope="col" class="">{{$key+1}}</td>
                                                         <td scope="col" class="">{{$unit->name}}</td>
                                                         <td scope="col" class="">{{$unit->description}}</td>
+                                                        @if(Auth::user()->role_id == 1)
                                                         <td scope="col" class=" ">
                                                             <div class=" form-switch">
                                                                 <input class="form-check-input " type="checkbox"
@@ -435,6 +442,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
+                                                        @endif
+
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -517,8 +526,10 @@
                                                     <th scope="col" class="" width="10">#</th>
                                                     <th scope="col" class="" width="25">Name</th>
                                                     <th scope="col" class="" width="30">Description</th>
+                                                    @if(Auth::user()->role_id == 1)
                                                     <th scope="col" class="" width="15">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
+                                                    @endif
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -527,6 +538,7 @@
                                                         <td scope="col" class="">{{$key+1}}</td>
                                                         <td scope="col" class="">{{$type->name}}</td>
                                                         <td scope="col" class="">{{$type->description}}</td>
+                                                        @if(Auth::user()->role_id == 1)
                                                         <td scope="col" class=" ">
                                                             <div class=" form-switch">
                                                                 <input class="form-check-input " type="checkbox"
@@ -642,6 +654,7 @@
                                                                 </div>
                                                             </div>
                                                         </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
