@@ -60,7 +60,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('/create/supplier',[AdminController::class,'supplier'])->name('supplier');
     Route::get('/editsup/{sup_id}',[AdminController::class,'editsup'])->name('editsup');
     Route::put('/update/supplier',[AdminController::class,'updatesup'])->name('updatesup');
-    Route::get('/deletesup',[AdminController::class,'deletesup'])->name('deletesup');
+    Route::delete('/deletesup',[AdminController::class,'deletesup'])->name('deletesup');
     Route::get('/sup_status/{id}',[AdminController::class,'sup_status'])->name('sup_status');
 
     // category

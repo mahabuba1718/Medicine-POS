@@ -602,7 +602,7 @@ class AdminController extends Controller
             'name' => ['required'],
             'email' => ['required','email'],
             'phone' => ['required'],
-//            'image3' => ['required','image','mimes:jpeg,png,jpg'],
+           'image3' => ['required','image','mimes:jpeg,png,jpg'],
             ]
         );
         if($validator->fails())
@@ -884,9 +884,10 @@ class AdminController extends Controller
      {
          $request->validate(
              [
-             'type' => ['required','unique:types'],
+             'type' => ['required'],
              ]
          );
+
          Type::create(
              [
                  'name'=>$request->type,

@@ -230,7 +230,11 @@
                                                         </tr>
                                                         @endif
                                                         @empty
-                                                        <h4 class="text-center">No Match Found Here.</h4>
+                                                        <tr class="text-center">
+                                                            <td colspan="8">
+                                                                No Match Found Here.
+                                                            </td>
+                                                        </tr>
                                                         @endforelse
                                                     </tbody>
                                                 </table>
@@ -429,7 +433,11 @@
                                                             </td>
                                                         </tr>
                                                         @empty
-                                                        <h4 class="text-center ">No Match Found Here.</h4>
+                                                        <tr class="text-center">
+                                                            <td colspan="8">
+                                                                No Match Found Here.
+                                                            </td>
+                                                        </tr>
                                                         @endforelse
                                                     </tbody>
                                                 </table>
@@ -579,7 +587,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($supplier as $key=> $supplied)
+                                                        @forelse($supplier as $key=> $supplied)
                                                         <tr class="text-center">
                                                             <td scope="col" class="">{{$key+1}}</td>
                                                             <td>
@@ -620,13 +628,19 @@
                                                                 <button type="button" data-bs-toggle="tooltip"
                                                                     data-bs-placement="bottom" title="Delete"
                                                                     class="btn btn-danger deleteRow2 float-right"
-                                                                    style="font-size: 0.7rem;">
+                                                                    style="font-size: 0.7rem;" value="{{$supplied->id}}">
                                                                     <i class="fa-solid fa-trash"></i>
                                                                 </button>
 
                                                             </td>
                                                         </tr>
-                                                        @endforeach
+                                                        @empty
+                                                        <tr class="text-center">
+                                                            <td colspan="8">
+                                                                No Match Found Here.
+                                                            </td>
+                                                        </tr>
+                                                        @endforelse
                                                     </tbody>
                                                 </table>
 
@@ -787,6 +801,7 @@ $(document).ready(function() {
     // supplier delete
     $(document).on('click', '.deleteRow2', function() {
         var delete_id = $(this).val();
+
         $("#myModals").modal('show');
         $("#deletingIds").val(delete_id);
     });
