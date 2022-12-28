@@ -572,7 +572,7 @@ class AdminController extends Controller
     public function deletecus(Request $request)
     {
         // dd($request->all());
-        $cus = User::find($request->del_id);
+        $cus = Customer::find($request->del_id);
         $destination = 'uploads/customer/'.$cus->image;
         if(File :: exists($destination))
         {

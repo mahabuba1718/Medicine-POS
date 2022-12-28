@@ -95,11 +95,11 @@
                                                    style="vertical-align: middle;">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col" class="" width="10">No.</th>
-                                                    <th scope="col" class="" width="25">Name</th>
-                                                    <th scope="col" class="" width="30">Description</th>
+                                                    <th scope="col" class="" width="5">No.</th>
+                                                    <th scope="col" class="" width="30">Name</th>
+                                                    <th scope="col" class="" width="40">Description</th>
                                                     @if(Auth::user()->role_id == 1)
-                                                    <th scope="col" class="" width="15">Status</th>
+                                                    <th scope="col" class="" width="5">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
                                                     @endif
                                                 </tr>
@@ -312,10 +312,10 @@
                                                 <thead>
                                                 <tr>
                                                     <th scope="col" class="" width="10">No.</th>
-                                                    <th scope="col" class="" width="25">Name</th>
+                                                    <th scope="col" class="" width="30">Name</th>
                                                     <th scope="col" class="" width="30">Description</th>
                                                     @if(Auth::user()->role_id == 1)
-                                                    <th scope="col" class="" width="15">Status</th>
+                                                    <th scope="col" class="" width="10">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
                                                     @endif
                                                 </tr>
@@ -524,10 +524,10 @@
                                                 <thead>
                                                 <tr>
                                                     <th scope="col" class="" width="10">#</th>
-                                                    <th scope="col" class="" width="25">Name</th>
+                                                    <th scope="col" class="" width="30">Name</th>
                                                     <th scope="col" class="" width="30">Description</th>
                                                     @if(Auth::user()->role_id == 1)
-                                                    <th scope="col" class="" width="15">Status</th>
+                                                    <th scope="col" class="" width="10">Status</th>
                                                     <th scope="col" class="" width="20">Action</th>
                                                     @endif
                                                 </tr>

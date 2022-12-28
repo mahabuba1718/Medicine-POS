@@ -426,7 +426,7 @@
                                                                 <button type="button" data-bs-toggle="tooltip"
                                                                     data-bs-placement="bottom" title="Delete"
                                                                     class="btn btn-danger deleteRowc float-right"
-                                                                    style="font-size: 0.7rem;">
+                                                                    style="font-size: 0.7rem;" value="{{$customers->id}}">
                                                                     <i class="fa-solid fa-trash"></i>
                                                                 </button>
 

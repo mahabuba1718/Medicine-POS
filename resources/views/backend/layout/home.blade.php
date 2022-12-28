@@ -72,8 +72,8 @@
 
     <footer class="footer mt-auto py-3">
         <div class="row text-white">
-            <div class="col-lg-6 text-center text-lg-right mb-2 mb-lg-0">
-                <p class="mb-1 mt-1">&copy; Sultana Mahabuba</p>
+            <div class="col-lg-12 text-center mb-2 mb-lg-0">
+                <p class="mb-1 mt-1 ">Copyright&copy; Medicine Shop POS. All Rights Reserved</p>
             </div>
         </div>
     </footer>
